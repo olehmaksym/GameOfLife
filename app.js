@@ -2,11 +2,9 @@ let canvas = document.getElementById("playArea");
 let ctx = canvas.getContext("2d");
 canvas.addEventListener('click', mouseClick,  false);
 
-let gen = 0;
-
 let cellSize = 15, 
-    col = 50,
-    row = 30,  
+    col = 15,
+    row = 6,  
     noc = row * col,
     width = col * cellSize, 
     height = row *cellSize;
@@ -42,15 +40,13 @@ let allCell = []; // array of all cells
   // count cell-name
   for (let y = 0; y < row; y++) {
     for (let x = 0; x < col; x++) {
-      let name = 'x' + (cellSize * x) + 'y' + (cellSize * y); 
       allCell.push({
-        name : name,
         x : cellSize * x,
         y : cellSize * y,
         index : cellIndex,
         isLife : false,
-        neighbor : '',
-        liveNeighbor : '',
+        neighbor : [],
+        liveNeighbor : 0
       });
       cellIndex++;
     }   
@@ -107,9 +103,8 @@ function deleteCell(index) {
 function checkCell(x,y) {
   x = x - x % cellSize;
   y = y - y % cellSize;
-  let cell = 'x' + x + 'y' + y;
   for (let i = 0; i < allCell.length; i++) {
-    if (allCell[i].name === cell) {
+    if (allCell[i].x === x && allCell[i].y === y) {
       allCell[i].isLife === true ? deleteCell(allCell[i].index) : createCell(allCell[i].index);
     }
   }
@@ -125,7 +120,7 @@ function mouseClick(event) {
 } 
 
 //===============================================
-// Count live neighbor
+// Count live neighbor, check rules and next generation function
 function countLiveNeighbor() {
   for (let i = 0; i < allCell.length; i++) {
     allCell[i].liveNeighbor = 0;
@@ -138,7 +133,7 @@ function countLiveNeighbor() {
   }
 }
 
-//rules
+let gen = 0;
 function nextGeneration() {
   countLiveNeighbor();
   for (let i = 0; i < allCell.length; i++) {
@@ -151,10 +146,11 @@ function nextGeneration() {
   }
   drawMesh();
   gen++;
-  console.log(`Gen ${gen}`);
   document.getElementById('gen').innerHTML = gen;
 }
 
+//===============================================
+// Form functions
 let timerId;
 
 function butPause() {
@@ -164,15 +160,37 @@ function butPause() {
 function butStart() {
   timerId = setInterval(nextGeneration,400);
 }
-
 function nextGen() {
   nextGeneration();
   console.log('next Gen');
 }
 
+// select shapes 
+function clearFunc() {
+  for (let i = 0; i < allCell.length; i++) {
+    allCell[i].isLife = false;
+    allCell[i].liveNeighbor = 0;
+    console.log('-');
+    deleteCell(i);
+  }
+  gen = 0;  
+  document.getElementById('gen').innerHTML = gen;  
+  drawMesh();
+}
 
-//===============================================
-// Count live neighbor
+function blinkerFunk() {
+
+}
+
+function toadFunc() {
+
+}
+
+function gliderFunc() {
+
+}
+
+
 function selectShapes() {
   let options = document.forms.formGOL.elements.shapes.value;
   switch (options) {
@@ -191,4 +209,6 @@ function selectShapes() {
   }
 
   console.log(`Check options ${options}`);
+  console.log(`sellll ${typeof options}`);
+  
 }
