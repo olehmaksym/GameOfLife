@@ -3,8 +3,8 @@ let ctx = canvas.getContext('2d');
 canvas.addEventListener('click', mouseClick,  false);
 
 let cellSize = 15, 
-    col = 29,
-    row = 20,  
+    col = 65,
+    row = 37,  
     noc = row * col,
     width = col * cellSize, 
     height = row *cellSize;
@@ -155,25 +155,23 @@ let timerId;
 let formGOL = document.forms.formGOL;
 let elm = formGOL.elements.butStartStop;
 
-function StartStop(elmValue) {
-  if (elmValue === 'Start') {
-    timerId = setInterval(nextGeneration,400);
-    elm.value = 'Stop';
-  }
-  else {
-    clearTimeout(timerId);
-    elm.value = 'Start';
-  }
-  console.log(elmValue);
+function getStart() {
+  timerId = setInterval(nextGeneration,400);
+  elm.value = 'Stop';
 }
 
-function nextGen() {
-  nextGeneration();
-  console.log('Next generation');
+function getStop() {
+  clearTimeout(timerId);
+  elm.value = 'Start';
+}
+
+function StartStop(elmValue) {
+  elmValue === 'Start' ? getStart() : getStop();
 }
 
 // select shapes 
 function clearFunc() {
+  if (elm.value === 'Stop') getStop();
   for (let i = 0; i < allCell.length; i++) {
     allCell[i].isLife = false;
     allCell[i].liveNeighbor = 0;
@@ -185,7 +183,7 @@ function clearFunc() {
 }
 
 function getCentralIndex() {
-  let index = (row * 0.5 - row % 2 - 1) * col + (col - col % 2) / 2;
+  let index = (row - row % 2) / 2 * col + (col - col % 2) / 2;
   return index;
 }
 
@@ -235,6 +233,24 @@ function beaconFunc() {
   drawMesh();  
 }
 
+function pentadecathlonFunc() {
+  clearFunc()
+  let i = getCentralIndex();
+  createCell(i);
+  createCell(i - col);
+  createCell(i - 2 * col - 1);
+  createCell(i - 2 * col + 1);
+  createCell(i - 3 * col);
+  createCell(i - 4 * col);
+  createCell(i + col);
+  createCell(i + 2 * col);
+  createCell(i + 3 * col - 1);
+  createCell(i + 3 * col + 1);
+  createCell(i + 4 * col);
+  createCell(i + 5 * col);
+  drawMesh(); 
+}
+
 function selectShapes() {
   let options = formGOL.elements.shapes.value;
   switch (options) {
@@ -249,9 +265,12 @@ function selectShapes() {
       break;
     case 'glider':
       gliderFunc();
+      break;
     case 'beacon':
       beaconFunc();
-      break;    
-  }
-  console.log(`Check shape : ${options}`);  
+      break;
+    case 'pentadecathlon':
+      pentadecathlonFunc();
+      break;  
+  } 
 }
