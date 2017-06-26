@@ -1,5 +1,4 @@
-# Game Of Life
-Test task for my job
+# Game of life task 
 
  Implement Conway’s Game of Life [https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life]
 - The page should contain game scene grid and three buttons (start, pause and next generation)
