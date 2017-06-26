@@ -1,5 +1,5 @@
-let canvas = document.getElementById("playArea");
-let ctx = canvas.getContext("2d");
+let canvas = document.getElementById('playArea');
+let ctx = canvas.getContext('2d');
 canvas.addEventListener('click', mouseClick,  false);
 
 let cellSize = 15, 
@@ -12,7 +12,7 @@ let cellSize = 15,
 canvas.width = width;
 canvas.height = height;
 
-ctx.fillStyle = "#00ffb5"; // color cells 
+ctx.fillStyle = '#00ffb5'; // color cells 
 
 //===============================================
 // Draw mesh
@@ -27,7 +27,7 @@ function drawMesh() {
     ctx.lineTo(width , cellSize * xl);
   }
   ctx.lineWidth = 1;
-  ctx.strokeStyle="#888";
+  ctx.strokeStyle='#888';
   ctx.stroke();
 }
 drawMesh();
@@ -152,15 +152,21 @@ function nextGeneration() {
 //===============================================
 // Form functions
 let timerId;
+let formGOL = document.forms.formGOL;
+let elm = formGOL.elements.butStartStop;
 
-function butPause() {
-  clearTimeout(timerId);
-  console.log('Pause');
+function StartStop(elmValue) {
+  if (elmValue === 'Start') {
+    timerId = setInterval(nextGeneration,400);
+    elm.value = 'Stop';
+  }
+  else {
+    clearTimeout(timerId);
+    elm.value = 'Start';
+  }
+  console.log(elmValue);
 }
-function butStart() {
-  timerId = setInterval(nextGeneration,400);
-  console.log('Start');
-}
+
 function nextGen() {
   nextGeneration();
   console.log('Next generation');
@@ -230,7 +236,7 @@ function beaconFunc() {
 }
 
 function selectShapes() {
-  let options = document.forms.formGOL.elements.shapes.value;
+  let options = formGOL.elements.shapes.value;
   switch (options) {
     case 'clear':
       clearFunc();
@@ -247,5 +253,5 @@ function selectShapes() {
       beaconFunc();
       break;    
   }
-  console.log(`Check options : ${options}`);  
+  console.log(`Check shape : ${options}`);  
 }
