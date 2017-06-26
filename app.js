@@ -3,8 +3,8 @@ let ctx = canvas.getContext("2d");
 canvas.addEventListener('click', mouseClick,  false);
 
 let cellSize = 15, 
-    col = 15,
-    row = 6,  
+    col = 29,
+    row = 20,  
     noc = row * col,
     width = col * cellSize, 
     height = row *cellSize;
@@ -159,10 +159,11 @@ function butPause() {
 }
 function butStart() {
   timerId = setInterval(nextGeneration,400);
+  console.log('Start');
 }
 function nextGen() {
   nextGeneration();
-  console.log('next Gen');
+  console.log('Next generation');
 }
 
 // select shapes 
@@ -170,7 +171,6 @@ function clearFunc() {
   for (let i = 0; i < allCell.length; i++) {
     allCell[i].isLife = false;
     allCell[i].liveNeighbor = 0;
-    console.log('-');
     deleteCell(i);
   }
   gen = 0;  
@@ -178,18 +178,56 @@ function clearFunc() {
   drawMesh();
 }
 
-function blinkerFunk() {
+function getCentralIndex() {
+  let index = (row * 0.5 - row % 2 - 1) * col + (col - col % 2) / 2;
+  return index;
+}
 
+function blinkerFunk() {
+  clearFunc()
+  let i = getCentralIndex();
+  createCell(i - col);
+  createCell(i);
+  createCell(i + col);  
+  drawMesh();
 }
 
 function toadFunc() {
-
+  clearFunc()
+  let i = getCentralIndex();
+  createCell(i);
+  createCell(i + 1);
+  createCell(i + 2);
+  createCell(i + col);
+  createCell(i + col - 1);
+  createCell(i + col + 1);
+  drawMesh();
 }
 
 function gliderFunc() {
-
+  clearFunc()
+  let i = getCentralIndex();
+  createCell(i);
+  createCell(i - 1);
+  createCell(i - 2);
+  createCell(i - col);
+  createCell(i - 2 * col - 1);
+  drawMesh();
 }
 
+function beaconFunc() {
+  clearFunc()
+  let i = getCentralIndex();
+  createCell(i);
+  createCell(i - 1);
+  createCell(i - col);
+  createCell(i - col - 1);
+  createCell(i + col + 1);
+  createCell(i + col + 2);
+  createCell(i + 2 * col + 1);
+  createCell(i + 2 * col + 2);
+  drawMesh();  
+}
 
 function selectShapes() {
   let options = document.forms.formGOL.elements.shapes.value;
@@ -205,10 +243,9 @@ function selectShapes() {
       break;
     case 'glider':
       gliderFunc();
+    case 'beacon':
+      beaconFunc();
       break;    
   }
-
-  console.log(`Check options ${options}`);
-  console.log(`sellll ${typeof options}`);
-  
+  console.log(`Check options : ${options}`);  
 }
