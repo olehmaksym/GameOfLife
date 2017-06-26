@@ -2,6 +2,8 @@ let canvas = document.getElementById("playArea");
 let ctx = canvas.getContext("2d");
 canvas.addEventListener('click', mouseClick,  false);
 
+let gen = 0;
+
 let cellSize = 15, 
     col = 50,
     row = 30,  
@@ -137,8 +139,6 @@ function countLiveNeighbor() {
 }
 
 //rules
-  let gen = 0;
-
 function nextGeneration() {
   countLiveNeighbor();
   for (let i = 0; i < allCell.length; i++) {
@@ -168,4 +168,27 @@ function butStart() {
 function nextGen() {
   nextGeneration();
   console.log('next Gen');
+}
+
+
+//===============================================
+// Count live neighbor
+function selectShapes() {
+  let options = document.forms.formGOL.elements.shapes.value;
+  switch (options) {
+    case 'clear':
+      clearFunc();
+      break;
+    case 'blinker':
+      blinkerFunk();
+      break;
+    case 'toad':
+      toadFunc();
+      break;
+    case 'glider':
+      gliderFunc();
+      break;    
+  }
+
+  console.log(`Check options ${options}`);
 }
