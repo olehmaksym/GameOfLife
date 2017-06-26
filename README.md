@@ -11,5 +11,4 @@ Bonus:
 - Add buttons for rendering of predefined patterns for example Blinker, Toad, Glider [https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns]
 
 ## Done
-Everything is done except for the bonus.
-The bonus task will be completed shortly.
+Everything is done.
