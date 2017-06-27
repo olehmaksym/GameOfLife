@@ -1,3 +1,4 @@
+'use strict';
 let canvas = document.getElementById('playArea');
 let ctx = canvas.getContext('2d');
 canvas.addEventListener('click', mouseClick,  false);
