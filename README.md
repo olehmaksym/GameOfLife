@@ -12,3 +12,7 @@ Bonus:
 
 ## Done
 Everything is done.
+
+## Viev online
+
+[EX] (https://olehmaksym.github.io/GameOfLife/ -"Game of life)
