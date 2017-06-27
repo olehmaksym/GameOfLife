@@ -15,4 +15,4 @@ Everything is done.
 
 ## Viev online
 
-[View page](https://olehmaksym.github.io/GameOfLife/)
+[Visit page](https://olehmaksym.github.io/GameOfLife/)
