@@ -3,9 +3,8 @@ let ctx = canvas.getContext('2d');
 canvas.addEventListener('click', mouseClick,  false);
 
 let cellSize = 15, 
-    col = 65,
-    row = 37,  
-    noc = row * col,
+    col = 60,
+    row = 30,
     width = col * cellSize, 
     height = row *cellSize;
 
@@ -18,11 +17,11 @@ ctx.fillStyle = '#00ffb5'; // color cells
 // Draw mesh
 function drawMesh() {
   ctx.beginPath();
-  for (var yl = 1; yl < col; yl++) {
+  for (let yl = 1; yl < col; yl++) {
     ctx.moveTo(cellSize * yl , 0);
     ctx.lineTo(cellSize * yl , height);
   }
-  for (var xl = 1; xl < row; xl++) {
+  for (let xl = 1; xl < row; xl++) {
     ctx.moveTo(0 , cellSize * xl);
     ctx.lineTo(width , cellSize * xl);
   }
@@ -35,58 +34,54 @@ drawMesh();
 //===============================================
 // Fill up allCell array
 let allCell = []; // array of all cells
-{
-  let cellIndex = 0;
-  // count cell-name
-  for (let y = 0; y < row; y++) {
-    for (let x = 0; x < col; x++) {
-      allCell.push({
-        x : cellSize * x,
-        y : cellSize * y,
-        index : cellIndex,
-        isLife : false,
-        neighbor : [],
-        liveNeighbor : 0
-      });
-      cellIndex++;
-    }   
-  }
+let cellIndex = 0;
+// count cell-name
+for (let y = 0; y < row; y++) {
+  for (let x = 0; x < col; x++) {
+    allCell.push({
+      x : cellSize * x,
+      y : cellSize * y,
+      index : cellIndex,
+      isLife : false,
+      neighbor : [],
+      liveNeighbor : 0
+    });
+    cellIndex++;
+  }   
 }
 
 //===============================================
 // Search  neighbor cell
-{
-  function get4Coor(index,n1,n2,n3){
-    allCell[index].neighbor = [n1,n2,n3];
-  }
-  function get6Coor(index,n1,n2,n3,n4,n5) {
-    allCell[index].neighbor = [n1,n2,n3,n4,n5];
-  }
-  for (let n = 0; n < allCell.length; n++) {
-    let x = allCell[n].x,
-        y = allCell[n].y,
-        i = allCell[n].index,
-        i1 = i - col - 1,
-        i2 = i - col,
-        i3 = i - col + 1,
-        i4 = i + 1,
-        i5 = i + col + 1,
-        i6 = i + col,
-        i7 = i + col - 1,
-        i8 = i - 1;
-  
-    if (x === 0 && y === 0) get4Coor(i,i4,i5,i6);
-    else if (x === width - cellSize && y === 0) get4Coor(i,i6,i7,i8);
-    else if (x === width - cellSize && y === height-cellSize) get4Coor(i,i1,i2,i8);
-    else if (x === 0 && y === height-cellSize) get4Coor(i,i2,i3,i4);
+function get4Coor(index,n1,n2,n3){
+  allCell[index].neighbor = [n1,n2,n3];
+}
+function get6Coor(index,n1,n2,n3,n4,n5) {
+  allCell[index].neighbor = [n1,n2,n3,n4,n5];
+}
+for (let n = 0; n < allCell.length; n++) {
+  let x = allCell[n].x,
+      y = allCell[n].y,
+      i = allCell[n].index,
+      i1 = i - col - 1,
+      i2 = i - col,
+      i3 = i - col + 1,
+      i4 = i + 1,
+      i5 = i + col + 1,
+      i6 = i + col,
+      i7 = i + col - 1,
+      i8 = i - 1;
 
-    else if (y === 0) get6Coor(i,i4,i5,i6,i7,i8);
-    else if (x === width - cellSize) get6Coor(i,i1,i2,i6,i7,i8);
-    else if (y === height - cellSize) get6Coor(i,i1,i2,i3,i4,i8);
-    else if (x === 0) get6Coor(i,i2,i3,i4,i5,i6);
+  if (x === 0 && y === 0) get4Coor(i,i4,i5,i6);
+  else if (x === width - cellSize && y === 0) get4Coor(i,i6,i7,i8);
+  else if (x === width - cellSize && y === height-cellSize) get4Coor(i,i1,i2,i8);
+  else if (x === 0 && y === height-cellSize) get4Coor(i,i2,i3,i4);
 
-    else allCell[n].neighbor = [i1,i2,i3,i4,i5,i6,i7,i8];
-  }
+  else if (y === 0) get6Coor(i,i4,i5,i6,i7,i8);
+  else if (x === width - cellSize) get6Coor(i,i1,i2,i6,i7,i8);
+  else if (y === height - cellSize) get6Coor(i,i1,i2,i3,i4,i8);
+  else if (x === 0) get6Coor(i,i2,i3,i4,i5,i6);
+
+  else allCell[n].neighbor = [i1,i2,i3,i4,i5,i6,i7,i8];
 }
 
 //===============================================
@@ -182,14 +177,10 @@ function clearFunc() {
   drawMesh();
 }
 
-function getCentralIndex() {
-  let index = (row - row % 2) / 2 * col + (col - col % 2) / 2;
-  return index;
-}
+let i = (row - row % 2) / 2 * col + (col - col % 2) / 2;
 
 function blinkerFunk() {
-  clearFunc()
-  let i = getCentralIndex();
+  clearFunc();
   createCell(i - col);
   createCell(i);
   createCell(i + col);  
@@ -197,8 +188,7 @@ function blinkerFunk() {
 }
 
 function toadFunc() {
-  clearFunc()
-  let i = getCentralIndex();
+  clearFunc();
   createCell(i);
   createCell(i + 1);
   createCell(i + 2);
@@ -209,8 +199,7 @@ function toadFunc() {
 }
 
 function gliderFunc() {
-  clearFunc()
-  let i = getCentralIndex();
+  clearFunc();
   createCell(i);
   createCell(i - 1);
   createCell(i - 2);
@@ -220,8 +209,7 @@ function gliderFunc() {
 }
 
 function beaconFunc() {
-  clearFunc()
-  let i = getCentralIndex();
+  clearFunc();
   createCell(i);
   createCell(i - 1);
   createCell(i - col);
@@ -234,8 +222,7 @@ function beaconFunc() {
 }
 
 function pentadecathlonFunc() {
-  clearFunc()
-  let i = getCentralIndex();
+  clearFunc();
   createCell(i);
   createCell(i - col);
   createCell(i - 2 * col - 1);
