@@ -15,4 +15,4 @@ Everything is done.
 
 ## Viev online
 
-[EX](https://olehmaksym.github.io/GameOfLife/ -"Game of life)
+[EX](https://olehmaksym.github.io/GameOfLife/)
